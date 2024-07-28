@@ -2,6 +2,8 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import { AppDataSource } from "./data-source";
+import { error } from "console";
 
 dotenv.config();
 
@@ -10,6 +12,12 @@ if (!process.env.PORT) {
 }
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
+
+AppDataSource.initialize()
+    .then(() => {
+        console.log('Data Source has benn initialized!');
+    })
+    .catch((error) => console.log(error));
 
 const app = express();
 
