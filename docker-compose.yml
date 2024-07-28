@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: courses_db
+    ports: 
+      - '5432:5432'
+    volumes:
+      - app-db:/var/lib/postgresql/data
+      - ./sql/dbcreation.sql:/docker-entrypoint-initdb.d/dbcreation.sql
+      #- ./sql/createtables.sql:/docker-entrypoint-initdb.d/createtables.sql
+      #- ./sql/inserttables.sql:/docker-entrypoint-initdb.d/inserttables.sql
+
+  app:
+    image: backend.courses
+    container_name: backend
+    build:
+      context: .
+    environment:
+      DB_SCHEMA: courses
+      DB_USER: postres
+      DB_PASSWORD: admin
+      DB_HOST: postgres
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+        
+volumes:
+  app-db:
