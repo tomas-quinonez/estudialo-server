@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { AppDataSource } from "./data-source";
 import { error } from "console";
+import { routes } from './routes';
 
 dotenv.config();
 
@@ -29,6 +30,9 @@ app.use(express.json());
 /*app.get('/', (req: Request, res: Response) => {
     res.send('Hello, TypeScript Express!');
 });*/
+
+// routes
+app.use('/', routes);
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
