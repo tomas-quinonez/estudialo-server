@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Category } from "./models/Category";
 import { Level } from "./models/Level";
+import { Modality } from "./models/Modality";
 
 import * as dotenv from "dotenv";
 
@@ -21,7 +22,7 @@ export const AppDataSource = new DataSource({
     synchronize: NODE_ENV === "dev" ? false : false,
     //logging logs sql command on the treminal
     logging: NODE_ENV === "dev" ? false : false,
-    entities: [Category, Level],
+    entities: [Category, Level, Modality],
     //migrations: [__dirname + "/migration/*.ts"],
     subscribers: [],
 });
