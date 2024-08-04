@@ -8,8 +8,8 @@ import { RequestHandler } from "express";
 
 export const getAllModalities: RequestHandler = async (req: Request, res: Response) => {
     try {
-        const categoryRepository = AppDataSource.getRepository(Modality);
-        const modalities: Modality[] = await categoryRepository.find({
+        const modalityRepository = AppDataSource.getRepository(Modality);
+        const modalities: Modality[] = await modalityRepository.find({
             select: {
                 idmodality: true,
                 description: true,

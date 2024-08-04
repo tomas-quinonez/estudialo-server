@@ -8,8 +8,8 @@ import { RequestHandler } from "express";
 
 export const getAllLevels: RequestHandler = async (req: Request, res: Response) => {
     try {
-        const categoryRepository = AppDataSource.getRepository(Level);
-        const levels: Level[] = await categoryRepository.find({
+        const levelRepository = AppDataSource.getRepository(Level);
+        const levels: Level[] = await levelRepository.find({
             select: {
                 idlevel: true,
                 description: true,
