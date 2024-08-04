@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
 import { Course } from "./Course"
 
-@Entity('courses.categories')
-export class Category {
+@Entity('courses.platforms')
+export class Platform {
     @PrimaryGeneratedColumn()
-    idcategory: number
+    idplatform: number
 
     @Column()
     name: string
@@ -12,6 +12,6 @@ export class Category {
     @Column()
     description: string
 
-    @OneToMany(() => Course, (course) => course.category)
+    @OneToMany(() => Course, (course) => course.platform)
     courses: Course[]
 }

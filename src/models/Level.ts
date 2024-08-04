@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Course } from "./Course"
 
 @Entity('courses.levels')
 export class Level {
@@ -7,4 +8,7 @@ export class Level {
 
     @Column()
     description: string
+
+    @OneToMany(() => Course, (course) => course.level)
+    courses: Course[]
 }
