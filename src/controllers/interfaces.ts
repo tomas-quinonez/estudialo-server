@@ -8,3 +8,11 @@ export interface CourseQuery {
     idlevel?: number,
     idmodality?: number,
 }
+
+export interface AiResponse {
+    lista_modulos?: {
+        order: number,
+        title: string,
+        description: string
+    }[]
+}

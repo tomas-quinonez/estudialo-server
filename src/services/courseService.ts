@@ -25,3 +25,35 @@ export const filterByKeywords = (keywords: string[], courses: Course[]): Course[
 
     return filteredCourses;
 }
+
+export const extractionFunctionSchema = {
+    name: "hoja_de_ruta",
+    description: "Muestra un listado de módulos para la hoja de ruta.",
+    parameters: {
+        type: "object",
+        properties: {
+            lista_modulos: {
+                type: "array",
+                items: {
+                    type: "object",
+                    properties: {
+                        order: {
+                            type: "number",
+                            description: "Orden en que debe realizarse el módulo"
+                        },
+                        title: {
+                            type: "string",
+                            description: "Titulo del módulo"
+                        },
+                        description: {
+                            type: "string",
+                            description: "Descripcion del módulo"
+                        }
+                    }
+                },
+                description: "Lista de módulos",
+            }
+        }
+
+    },
+};
