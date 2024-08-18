@@ -32,7 +32,7 @@ app.use(express.json());
 });*/
 
 // routes
-app.use('/', routes);
+app.use('/api', routes);
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
