@@ -16,7 +16,7 @@ const PORT: number = parseInt(process.env.PORT as string, 10);
 
 AppDataSource.initialize()
     .then(() => {
-        console.log('Data Source has benn initialized!');
+        console.log('Data Source has been initialized!');
     })
     .catch((error) => console.log(error));
 
