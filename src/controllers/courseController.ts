@@ -3,13 +3,11 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { Course } from "../models/Course";
+import { CoursesAiResponse } from "./interfaces";
 import { RequestHandler } from "express";
 import { LessThanOrEqual, Repository } from "typeorm";
-import { CourseQuery, AiResponse } from "./interfaces";
-import { filterByKeywords, extractionFunctionSchema } from "../services/courseService";
-import { ChatOpenAI } from "@langchain/openai";
-import { JsonOutputFunctionsParser } from "langchain/output_parsers";
-import { HumanMessage } from "@langchain/core/messages";
+import { CourseQuery } from "./interfaces";
+import { filterByKeywords, invokeRunnable } from "../services/courseService";
 import { validationResult } from "express-validator";
 
 
@@ -52,8 +50,15 @@ export const getAllCourses: RequestHandler = async (req: Request, res: Response)
 };
 
 
+// Se obtienen los cursos de la DB habiendo aplicado los filtros (opcionales)
 export const getCourses: RequestHandler = async (req: Request, res: Response) => {
     try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const query: CourseQuery = {
             idcategory: req.body.idcategory,
             idplatform: req.body.idplatform,
@@ -106,31 +111,20 @@ export const getCourses: RequestHandler = async (req: Request, res: Response) =>
 };
 
 
-export const getLearningPath: RequestHandler = async (req: Request, res: Response) => {
+// A partir de una descripcion se retorna una lista de links a los cursos solicitados (solo los links)
+export const getCoursesFromInput: RequestHandler = async (req: Request, res: Response) => {
     try {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        
         const input: string = req.body.input;
 
-        // instanciar el parser
-        const parser = new JsonOutputFunctionsParser();
+        const result: CoursesAiResponse = await invokeRunnable(input);
 
-        // instanciar la clase ChatOpenAI
-        const model = new ChatOpenAI({ model: "gpt-4o-mini" });
-
-        // crear un runnable, asociar la function que define el esquema JSON al modelo
-        // y suministrar la salida al parser a traves de un pipe
-        const runnable = model
-            .bind({
-                functions: [extractionFunctionSchema],
-                function_call: { name: "hoja_de_ruta" },
-            })
-            .pipe(parser);
-
-        // se invoca el runnable con la entrada
-        const result: AiResponse = await runnable.invoke([
-            new HumanMessage(input),
-        ]);
-
-        res.json(result?.lista_modulos);
+        res.json(result?.courses);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error' });

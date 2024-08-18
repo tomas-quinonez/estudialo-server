@@ -9,10 +9,18 @@ export interface CourseQuery {
     idmodality?: number,
 }
 
-export interface AiResponse {
+export interface LearningPathAiResponse {
     lista_modulos?: {
         order: number,
         title: string,
         description: string
+    }[]
+}
+
+export interface CoursesAiResponse {
+    courses?: {
+        id: number,
+        name: string,
+        url: string
     }[]
 }
