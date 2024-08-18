@@ -11,6 +11,7 @@ export const getAllCategories: RequestHandler = async (req: Request, res: Respon
         const categoryRepository = AppDataSource.getRepository(Category);
         const categories: Category[] = await categoryRepository.find({
             select: {
+                idcategory: true,
                 name: true,
                 description: true,
             }
