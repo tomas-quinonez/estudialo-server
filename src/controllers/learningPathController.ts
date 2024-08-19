@@ -7,7 +7,7 @@ import { invokeRunnable } from "../services/learningPathService";
 import { validationResult } from "express-validator";
 
 
-export const getLearningPath: RequestHandler = async (req: Request, res: Response) => {
+export const generateLearningPath: RequestHandler = async (req: Request, res: Response) => {
     try {
         const errors = validationResult(req);
 
