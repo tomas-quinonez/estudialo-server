@@ -28,6 +28,10 @@ export const courseSchema = {
                             type: "string",
                             description: "Nombre del módulo"
                         },
+                        platform: {
+                            type: "string",
+                            description: "Plataforma donde se imparte el curso"
+                        },
                         url: {
                             type: "string",
                             description: "URL del curso"
