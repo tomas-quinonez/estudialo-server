@@ -22,3 +22,15 @@ export const getAllCategories: RequestHandler = async (req: Request, res: Respon
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+export const save: RequestHandler = async (req: Request, res: Response) => {
+    try {
+        const newCategory: Category = req.body;
+        const categoryRepository = AppDataSource.getRepository(Category);
+        const result = categoryRepository.save(newCategory);
+        res.json(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
