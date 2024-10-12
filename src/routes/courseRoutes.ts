@@ -8,7 +8,7 @@ import { validateCourseFilters } from '../middlewares/validators/courseValidator
 export const courseRouter = Router();
 
 courseRouter.post('/save', controller.save);
-courseRouter.get('/getallcourses', controller.getAllCourses);
+courseRouter.get('/courses', controller.getAllCourses);
 courseRouter.post('/getcourses', validateCourseFilters, controller.getCourses);
 courseRouter.post('/delete', controller.deleteCourse);
 courseRouter.post('/scrape', controller.scrape);
