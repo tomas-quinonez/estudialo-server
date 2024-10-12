@@ -5,4 +5,4 @@ import { getAllLevels } from '../controllers/levelController';
 
 export const levelRouter = Router();
 
-levelRouter.get('/getalllevels', getAllLevels);
+levelRouter.get('/levels', getAllLevels);

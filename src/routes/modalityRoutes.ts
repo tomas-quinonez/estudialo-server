@@ -5,4 +5,4 @@ import { getAllModalities } from '../controllers/modalityController';
 
 export const modalityRouter = Router();
 
-modalityRouter.get('/getallmodalities', getAllModalities);
+modalityRouter.get('/modalities', getAllModalities);
