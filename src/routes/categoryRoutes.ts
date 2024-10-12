@@ -1,9 +1,10 @@
 // routes/categoryRoutes.ts
 
 import { Router } from 'express';
-import * as service from '../controllers/categoryController';
+import * as controller from '../controllers/categoryController';
 
 export const categoryRouter = Router();
 
-categoryRouter.get('/categories', service.getAllCategories);
-categoryRouter.post('/save', service.save);
+categoryRouter.post('/save', controller.save);
+categoryRouter.get('/categories', controller.getAllCategories);
+categoryRouter.post('/delete', controller.deleteCategory);
