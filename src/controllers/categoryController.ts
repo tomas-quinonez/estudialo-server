@@ -27,7 +27,7 @@ export const save: RequestHandler = async (req: Request, res: Response) => {
     try {
         const newCategory: Category = req.body;
         const categoryRepository = AppDataSource.getRepository(Category);
-        const result = categoryRepository.save(newCategory);
+        const result = await categoryRepository.save(newCategory);
         res.json(result);
     } catch (error) {
         console.log(error);
