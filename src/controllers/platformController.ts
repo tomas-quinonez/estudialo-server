@@ -36,3 +36,16 @@ export const save: RequestHandler = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+export const deletePlatform: RequestHandler = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.body;
+        
+        const platformRepository = AppDataSource.getRepository(Platform);
+        const result = await platformRepository.delete({ idplatform: id});
+        res.json(result);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
