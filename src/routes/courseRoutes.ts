@@ -1,12 +1,14 @@
 // routes/courseRoutes.ts
 
 import { Router } from 'express';
-import { getAllCourses, getCourses, getCoursesFromInput } from '../controllers/courseController';
+import * as controller from '../controllers/courseController';
 import { body, query } from "express-validator";
-import { validateCourseFilters, validateCourseInput } from '../middlewares/validators/courseValidators';
+import { validateCourseFilters } from '../middlewares/validators/courseValidators';
 
 export const courseRouter = Router();
 
-courseRouter.get('/getallcourses', getAllCourses);
-courseRouter.post('/getcourses', validateCourseFilters, getCourses);
-courseRouter.post('/getcoursesfrominput', validateCourseInput, getCoursesFromInput);
+courseRouter.post('/save', controller.save);
+courseRouter.get('/getallcourses', controller.getAllCourses);
+courseRouter.post('/getcourses', validateCourseFilters, controller.getCourses);
+courseRouter.post('/delete', controller.deleteCourse);
+courseRouter.post('/scrape', controller.scrape);

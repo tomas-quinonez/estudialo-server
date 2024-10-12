@@ -9,10 +9,10 @@ export class Course {
     @PrimaryGeneratedColumn()
     idcourse: number
 
-    @Column()
+    @Column({ nullable: true })
     idcategory: number
 
-    @Column()
+    @Column({ nullable: true })
     idplatform: number
 
     @Column()
@@ -30,13 +30,13 @@ export class Course {
     @Column()
     cost: number
 
-    @Column()
+    @Column({ nullable: true })
     idlevel: number
 
-    @Column()
+    @Column({ nullable: true })
     idmodality: number
 
-    @Column()
+    @Column({ nullable: true })
     idpath: number
 
     @Column()
