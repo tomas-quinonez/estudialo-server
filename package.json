@@ -23,6 +23,7 @@
     "express-validator": "^7.1.0",
     "faiss-node": "^0.5.1",
     "helmet": "^7.1.0",
+    "hnswlib-node": "^3.0.0",
     "html-to-text": "^9.0.5",
     "langchain": "^0.2.12",
     "pg": "^8.12.0",
