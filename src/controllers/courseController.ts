@@ -3,7 +3,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { Course } from "../models/Course";
-import { ScrapedCourse } from "./interfaces";
+import { CourseFilters, ScrapedCourse, SuggestedCourse } from "./interfaces";
 import { RequestHandler } from "express";
 import { LessThanOrEqual, Repository } from "typeorm";
 import { CourseQuery } from "./interfaces";
@@ -146,3 +146,19 @@ export const scrape: RequestHandler = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+export const getCoursesByFilters: RequestHandler = async (req: Request, res: Response) => {
+  try {
+    const filters: CourseFilters = req.body;
+    const courses: Course[] | SuggestedCourse[] = await service.coursesByFilters(filters);
+
+    if ('description' in courses[0]) {
+      res.json({ courses: courses });
+    } else {
+      res.json({ courses: [], suggestedCourses: courses });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
