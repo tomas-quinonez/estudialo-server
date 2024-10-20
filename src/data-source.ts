@@ -6,6 +6,7 @@ import { Modality } from "./models/Modality";
 import { Platform } from "./models/Platform";
 import { Learningpath } from "./models/Learningpath";
 import { Course } from "./models/Course";
+import { SuggestedCourse } from "./models/SuggestedCourse";
 
 import * as dotenv from "dotenv";
 
@@ -25,7 +26,7 @@ export const AppDataSource = new DataSource({
     synchronize: NODE_ENV === "dev" ? false : false,
     //logging logs sql command on the treminal
     logging: NODE_ENV === "dev" ? false : false,
-    entities: [Category, Level, Modality, Platform, Learningpath, Course],
+    entities: [Category, Level, Modality, Platform, Learningpath, Course, SuggestedCourse],
     //migrations: [__dirname + "/migration/*.ts"],
     subscribers: [],
 });
