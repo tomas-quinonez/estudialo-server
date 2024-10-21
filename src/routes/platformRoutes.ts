@@ -5,5 +5,5 @@ import * as controller from '../controllers/platformController';
 
 export const platformRouter = Router();
 
-platformRouter.get('/platforms', controller.getAllPlatforms);
+platformRouter.get('/allplatforms', controller.getAllPlatforms);
 platformRouter.post('/save', controller.save);
