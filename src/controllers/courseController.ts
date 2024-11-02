@@ -151,8 +151,10 @@ export const getCoursesByFilters: RequestHandler = async (req: Request, res: Res
   try {
     const filters: CourseFilters = req.body;
     const courses: Course[] | SuggestedCourse[] = await service.coursesByFilters(filters);
+    console.log(courses);
+    
 
-    if ('description' in courses[0]) {
+    if (courses[0] && 'description' in courses[0]) {
       res.json({ courses: courses });
     } else {
       res.json({ courses: [], suggestedCourses: courses });
