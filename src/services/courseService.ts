@@ -359,7 +359,7 @@ export const coursesByFilters = async (
   data: CourseFilters
 ): Promise<Course[] | SuggCourse[]> => {
   try {
-    const { input, idcategory, idplatform, duration, cost } = data;
+    const { input, idcategory, idlevel, duration, cost } = data;
 
     const courseRepository: Repository<Course> =
       AppDataSource.getRepository(Course);
@@ -384,7 +384,7 @@ export const coursesByFilters = async (
       },
       where: {
         idcategory: idcategory,
-        idplatform: idplatform,
+        idlevel: idlevel,
         duration: duration && LessThanOrEqual(duration),
         cost: cost && LessThanOrEqual(cost),
       },

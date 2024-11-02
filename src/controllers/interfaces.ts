@@ -31,7 +31,7 @@ export interface ScrapedCourse {
 export interface CourseFilters {
   input: string;
   idcategory?: number;
-  idplatform?: number;
+  idlevel?: number;
   duration?: number;
   cost?: number;
 }
