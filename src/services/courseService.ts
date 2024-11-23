@@ -370,6 +370,7 @@ export const coursesByFilters = async (
         duration: true,
         cost: true,
         url: true,
+        priority: true,
         category: {
           name: true,
           description: true,

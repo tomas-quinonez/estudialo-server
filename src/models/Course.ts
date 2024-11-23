@@ -42,6 +42,9 @@ export class Course {
     @Column()
     url: string
 
+    @Column()
+    priority: number
+
     @ManyToOne(() => Category, (category) => category.courses)
     @JoinColumn({ name: 'idcategory' })
     category: Category

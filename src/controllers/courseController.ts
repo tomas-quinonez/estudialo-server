@@ -33,6 +33,7 @@ export const getAllCourses: RequestHandler = async (req: Request, res: Response)
         description: true,
         duration: true,
         cost: true,
+        priority: true,
         category: {
           name: true,
           description: true,
@@ -88,6 +89,7 @@ export const getCourses: RequestHandler = async (req: Request, res: Response) =>
         duration: true,
         cost: true,
         url: true,
+        priority: true,
         category: {
           name: true,
           description: true,

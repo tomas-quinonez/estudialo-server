@@ -76,6 +76,8 @@ CREATE TABLE courses.courses (
 	CONSTRAINT courses_modalities_fk FOREIGN KEY (idpath) REFERENCES courses.modalities(idmodality)
 );
 
+ALTER TABLE courses.courses ADD priority int NULL;
+
 INSERT INTO users.roles 
 (idrole, name)
 VALUES(1, 'admin');
