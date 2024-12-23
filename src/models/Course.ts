@@ -31,6 +31,12 @@ export class Course {
     cost: number
 
     @Column({ nullable: true })
+    dollarcost: number
+
+    @Column({ nullable: true })
+    dollarvalue: number
+
+    @Column({ nullable: true })
     idlevel: number
 
     @Column({ nullable: true })

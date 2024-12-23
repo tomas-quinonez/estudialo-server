@@ -28,6 +28,7 @@ import { getPlatformArray } from "./platformService";
 import { getCategoryArray } from "./categoryService";
 import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { link } from "fs";
+import * as dollarUtils from "../utils/dollar.utils";
 
 const { leven } = require("@nlpjs/similarity");
 
@@ -187,7 +188,7 @@ const searchAndExtractLinks = async (query: string): Promise<string[]> => {
       !link.toLowerCase().includes("stackoverflow")
   );
   browser.close();
-  
+
   return courseLinks;
 };
 
@@ -472,10 +473,10 @@ export const suggestCourses = async (input: string): Promise<SuggCourse[]> => {
   const allCourses = await suggCourseRepo.find({
     select: { url: true },
   });
-  
+
   for (let course of result.courses as SuggCourse[]) {
     try {
-      if (!(allCourses.some(c => c.url === course.url))) {
+      if (!allCourses.some((c) => c.url === course.url)) {
         suggCourseRepo.save(course);
       }
     } catch (error: any) {
@@ -484,4 +485,16 @@ export const suggestCourses = async (input: string): Promise<SuggCourse[]> => {
   }
 
   return result.courses as SuggCourse[];
+};
+
+export const updateDollarCost = async (): Promise<void> => {
+  const courseRepository = AppDataSource.getRepository(Course);
+  const value: number = await dollarUtils.getCurrentDollarValue();
+  const courses = await courseRepository.find();
+
+  for (let course of courses) {
+    course.dollarvalue = value;
+    course.dollarcost = course.cost / value;
+    await courseRepository.save(course);
+  }
 };

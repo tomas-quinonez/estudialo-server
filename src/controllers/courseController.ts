@@ -166,3 +166,13 @@ export const getCoursesByFilters: RequestHandler = async (req: Request, res: Res
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
+export const updateDollarCost: RequestHandler = async (_req: Request, res: Response) => {
+  try {
+    await service.updateDollarCost();
+    res.json({ message: 'ok' })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
