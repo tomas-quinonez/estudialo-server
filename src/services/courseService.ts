@@ -61,7 +61,8 @@ export const getScrapedCourseSchema = async (): Promise<any> => {
         },
         cost: {
           type: "number",
-          description: "Costo del curso solo en números",
+          description:
+            "Costo del curso solo en números. Solo insertar si el costo está en pesos argentinos. En caso contrario insertar el valor 0",
         },
         platform: {
           type: "string",
@@ -269,7 +270,8 @@ const saveScrapedcourse = async (
   scrapedCourse: ScrapedCourse,
   getPlatformId: (name: string | undefined) => number | undefined,
   getLevelId: (name: string | undefined) => number | undefined,
-  getCategoryId: (name: string | undefined) => number | undefined
+  getCategoryId: (name: string | undefined) => number | undefined,
+  dollarValue?: number
 ): Promise<void> => {
   const courseRepository = AppDataSource.getRepository(Course);
   const course: Course | null = await courseRepository.findOne({
@@ -284,7 +286,7 @@ const saveScrapedcourse = async (
   const courses = [];
 
   if (!course) {
-    const newCourse = {
+    const newCourse: any = {
       name: scrapedCourse.name ?? undefined,
       description: scrapedCourse.description ?? undefined,
       duration: scrapedCourse.duration ?? undefined,
@@ -294,6 +296,9 @@ const saveScrapedcourse = async (
       idcategory: getCategoryId(scrapedCourse.category),
       url: scrapedCourse.url ?? undefined,
     };
+    if (scrapedCourse.cost && dollarValue) {
+      newCourse.dollarcost = scrapedCourse.cost / dollarValue;
+    }
     await courseRepository.save(newCourse);
     courses.push(scrapedCourse);
   }
@@ -344,8 +349,15 @@ export const scrapeCourses = async (
   for (let link of links) {
     try {
       const result: ScrapedCourse = await getScrapedCourse(link);
+      const dollarValue: number = await dollarUtils.getCurrentDollarValue();
       if (result.name && result.url) {
-        saveScrapedcourse(result, getPlatformId, getLevelId, getCategoryId);
+        saveScrapedcourse(
+          result,
+          getPlatformId,
+          getLevelId,
+          getCategoryId,
+          dollarValue
+        );
         scrapedCourses.push(result);
       }
     } catch (e) {
@@ -372,6 +384,7 @@ export const coursesByFilters = async (
         cost: true,
         url: true,
         priority: true,
+        dollarcost: true,
         category: {
           name: true,
           description: true,

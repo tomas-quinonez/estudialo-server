@@ -23,6 +23,7 @@ export interface ScrapedCourse {
   duration?: number;
   level?: string;
   cost?: number;
+  dollarcost?: number;
   platform?: string;
   category?: string;
   url?: string;
