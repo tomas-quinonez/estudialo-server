@@ -426,7 +426,7 @@ export const coursesByFilters = async (
 
         const vectorStore = await HNSWLib.fromDocuments(
           docs,
-          new OpenAIEmbeddings()
+          new OpenAIEmbeddings({ model: "text-embedding-3-small" })
         );
         const filteredDocs = await vectorStore.similaritySearchWithScore(
           input,
