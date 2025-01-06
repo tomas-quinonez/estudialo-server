@@ -434,7 +434,7 @@ export const coursesByFilters = async (
         );
 
         courses = filteredDocs
-          .filter((doc) => doc[1] <= 0.159)
+          .filter((doc) => doc[1] <= 0.6)
           .map((doc) => doc[0].metadata) as Course[];
 
         if (courses.length === 0) {
