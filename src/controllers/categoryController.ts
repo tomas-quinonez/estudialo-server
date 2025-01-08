@@ -1,49 +1,63 @@
 // controllers/categoryController.ts
 
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { Category } from "../models/Category";
 import { RequestHandler } from "express";
+import {
+  sendErrorResponse,
+  sendSuccessResponse,
+} from "../middlewares/responseHandlers";
 
+export const getAllCategories: RequestHandler = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const categoryRepository = AppDataSource.getRepository(Category);
+    const categories: Category[] = await categoryRepository.find({
+      select: {
+        idcategory: true,
+        name: true,
+        description: true,
+      },
+    });
 
-export const getAllCategories: RequestHandler = async (req: Request, res: Response) => {
-    try {
-        const categoryRepository = AppDataSource.getRepository(Category);
-        const categories: Category[] = await categoryRepository.find({
-            select: {
-                idcategory: true,
-                name: true,
-                description: true,
-            }
-        });
-        res.json(categories);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+    sendSuccessResponse(res, categories);
+  } catch (error: any) {
+    sendErrorResponse(error, next);
+  }
 };
 
-export const save: RequestHandler = async (req: Request, res: Response) => {
-    try {
-        const newCategory: Category = req.body;
-        const categoryRepository = AppDataSource.getRepository(Category);
-        const result = await categoryRepository.save(newCategory);
-        res.json(result);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+export const save: RequestHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const newCategory: Category = req.body;
+    const categoryRepository = AppDataSource.getRepository(Category);
+    const result = await categoryRepository.save(newCategory);
+
+    sendSuccessResponse(res, result);
+  } catch (error: any) {
+    sendErrorResponse(error, next);
+  }
 };
 
-export const deleteCategory: RequestHandler = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.body;
-        
-        const categoryRepository = AppDataSource.getRepository(Category);
-        const result = await categoryRepository.delete({ idcategory: id});
-        res.json(result);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+export const deleteCategory: RequestHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.body;
+    const categoryRepository = AppDataSource.getRepository(Category);
+    const result = await categoryRepository.delete({ idcategory: id });
+
+    sendSuccessResponse(res, result);
+  } catch (error: any) {
+    sendErrorResponse(error, next);
+  }
 };

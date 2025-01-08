@@ -1,51 +1,62 @@
 // controllers/platformController.ts
 
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { RequestHandler } from "express";
 import { Platform } from "../models/Platform";
+import {
+  sendErrorResponse,
+  sendSuccessResponse,
+} from "../middlewares/responseHandlers";
 
-
-export const getAllPlatforms: RequestHandler = async (req: Request, res: Response) => {
-    try {
-        const platformRepository = AppDataSource.getRepository(Platform);
-        const platforms: Platform[] = await platformRepository.find({
-            select: {
-                idplatform: true,
-                name: true,
-                description: true,
-            }
-        });
-        res.json(platforms);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+export const getAllPlatforms: RequestHandler = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const platformRepository = AppDataSource.getRepository(Platform);
+    const platforms: Platform[] = await platformRepository.find({
+      select: {
+        idplatform: true,
+        name: true,
+        description: true,
+      },
+    });
+    sendSuccessResponse(res, platforms);
+  } catch (error: any) {
+    sendErrorResponse(error, next);
+  }
 };
 
-export const save: RequestHandler = async (req: Request, res: Response) => {
-    try {
-        const newPlatform: Platform = req.body;
-        console.log(newPlatform);
-        
-        const platformRepository = AppDataSource.getRepository(Platform);
-        const result = await platformRepository.save(newPlatform);
-        res.json(result);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+export const save: RequestHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const newPlatform: Platform = req.body;
+    const platformRepository = AppDataSource.getRepository(Platform);
+    const result = await platformRepository.save(newPlatform);
+
+    sendSuccessResponse(res, result);
+  } catch (error: any) {
+    sendErrorResponse(error, next);
+  }
 };
 
-export const deletePlatform: RequestHandler = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.body;
-        
-        const platformRepository = AppDataSource.getRepository(Platform);
-        const result = await platformRepository.delete({ idplatform: id});
-        res.json(result);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+export const deletePlatform: RequestHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.body;
+    const platformRepository = AppDataSource.getRepository(Platform);
+    const result = await platformRepository.delete({ idplatform: id });
+
+    sendSuccessResponse(res, result);
+  } catch (error: any) {
+    sendErrorResponse(error, next);
+  }
 };
