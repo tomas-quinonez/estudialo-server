@@ -10,6 +10,7 @@ import {
   sendSuccessResponse,
   sendErrorResponse,
 } from "../middlewares/responseHandlers";
+import { validateInputContent } from "../middlewares/validators/learningPathValidators";
 
 export const generateLearningPath: RequestHandler = async (
   req: Request,
@@ -27,6 +28,17 @@ export const generateLearningPath: RequestHandler = async (
     }
 
     const input: string = req.body.input;
+    const contentValResult: string = await validateInputContent(input);
+
+    if (contentValResult != "si") {
+      throw new APIError(
+        "Error contenido de la entrada no válido",
+        400,
+        "El contenido debe estar relacionado a formación académica. Entrada: " +
+          input
+      );
+    }
+
     const result: LearningPathAiResponse = await invokeRunnable(input);
 
     sendSuccessResponse(res, result?.lista_modulos);
