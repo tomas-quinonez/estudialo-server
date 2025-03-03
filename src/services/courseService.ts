@@ -13,7 +13,9 @@ import {
   JsonOutputFunctionsParser,
 } from "langchain/output_parsers";
 import { HumanMessage } from "@langchain/core/messages";
-import puppeteer from "puppeteer";
+import puppeteer from 'puppeteer-extra';
+import AdblockerPlugin from 'puppeteer-extra-plugin-adblocker';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { RunnableSequence } from "@langchain/core/runnables";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { PuppeteerWebBaseLoader } from "@langchain/community/document_loaders/web/puppeteer";
@@ -163,6 +165,8 @@ export const filterByKeywords = (
 };
 
 const searchAndExtractLinks = async (query: string): Promise<string[]> => {
+  puppeteer.use(AdblockerPlugin()).use(StealthPlugin())
+
   // Lanza el navegador
   const browser = await puppeteer.launch({
     executablePath: "/usr/bin/google-chrome",
@@ -170,10 +174,13 @@ const searchAndExtractLinks = async (query: string): Promise<string[]> => {
     args: ["--no-sandbox"],
   });
   const page = await browser.newPage();
+  await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+  await page.mouse.move(100, 200); await page.mouse.move(150, 250, { steps: 10 }); await page.keyboard.type('Hello World', { delay: 100 });
+
 
   // Navega a Google y busca el término
   await page.goto(
-    `https://www.google.com/search?q=${encodeURIComponent("curso de " + query)}`
+    `https://www.bing.com/search?q=${encodeURIComponent("curso de " + query)}`, { waitUntil: 'networkidle2' }
   );
 
   // Espera a que los resultados carguen y extrae los enlaces
